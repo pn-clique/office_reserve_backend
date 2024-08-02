@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(uuid())
+  name          String          @db.VarChar(500)
+  email         String          @unique @db.VarChar(256)
+  password      String?         @db.VarChar(250)
+  type_user     UserType
+  phone String? @db.VarChar(13)
+  Booking       Booking[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  PurchaseOrder PurchaseOrder[]
+
+  @@map("users")
+}
+
+model Place {
+  id        String    @id @default(uuid())
+  name      String    @db.VarChar(250)
+  capacity  Int
+  photo     String?   @db.Text
+  Booking   Booking[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("places")
+}
+
+model Modality {
+  id          String    @id @default(uuid())
+  name        String    @db.VarChar(250)
+  description String    @db.Text
+  price       Float
+  duration    Int
+  Booking     Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("modalities")
+}
+
+model Booking {
+  id            String          @id @default(uuid())
+  user_id       String
+  user          User            @relation(fields: [user_id], references: [id])
+  place_id      String
+  place         Place           @relation(fields: [place_id], references: [id])
+  modality_id   String
+  modality      Modality        @relation(fields: [modality_id], references: [id])
+  init_date     DateTime
+  final_date    DateTime
+  status        BookingStatus
+  description   String?         @db.Text
+  reference     String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  PurchaseOrder PurchaseOrder[]
+
+  @@map("bookings")
+}
+
+model PurchaseOrder {
+  id          String   @id @default(uuid())
+  user_id     String
+  user        User     @relation(fields: [user_id], references: [id])
+  booking_id  String
+  booking     Booking  @relation(fields: [booking_id], references: [id])
+  total_price Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("purchase_orders")
+}
+
+enum UserType {
+  ADMIN
+  USER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
