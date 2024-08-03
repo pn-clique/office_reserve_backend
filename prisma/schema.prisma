@@ -19,11 +19,10 @@ model User {
   email         String          @unique @db.VarChar(256)
   password      String?         @db.VarChar(250)
   type_user     UserType
-  phone String? @db.VarChar(13)
+  phone         String?         @db.VarChar(13)
   Booking       Booking[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
-  PurchaseOrder PurchaseOrder[]
 
   @@map("users")
 }
@@ -63,9 +62,11 @@ model Booking {
   modality      Modality        @relation(fields: [modality_id], references: [id])
   init_date     DateTime
   final_date    DateTime
+  start_time    DateTime
+  end_time      DateTime
   status        BookingStatus
   description   String?         @db.Text
-  reference     String
+  reference     String          @unique
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   PurchaseOrder PurchaseOrder[]
@@ -75,8 +76,6 @@ model Booking {
 
 model PurchaseOrder {
   id          String   @id @default(uuid())
-  user_id     String
-  user        User     @relation(fields: [user_id], references: [id])
   booking_id  String
   booking     Booking  @relation(fields: [booking_id], references: [id])
   total_price Float
