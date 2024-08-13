@@ -8,7 +8,13 @@ export class CreateUserController implements _Controller {
     const { name, email, password, phone } = request.body;
 
     const useCase = new CreateUserUseCase();
-    const index = await useCase.execute({ name, email, password, phone, typeUser: TYPE_USER.USER });
+    const index = await useCase.execute({
+      name,
+      email,
+      password,
+      phone,
+      typeUser: TYPE_USER.USER,
+    });
     return response.status(index.status).json(index.data);
   }
 }
