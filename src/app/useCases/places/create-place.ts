@@ -6,6 +6,7 @@ import { PlaceEntity } from "../../entities/place-entity";
 export class CreatePlaceUseCase implements UseCase {
   async execute(request: PlaceEntity): Promise<HttpResponse<any>> {
     try {
+      console.log({ request })
       if(request.capacity <= 0) {
         return badRequestResponse({ message: "Capacity must be greater than 0" });
       }
