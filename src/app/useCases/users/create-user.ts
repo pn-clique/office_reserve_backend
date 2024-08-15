@@ -2,6 +2,7 @@ import { badRequestResponse, errorResponse, HttpResponse, successResponse, UseCa
 import Prisma from "../../../infra/database/prisma-db";
 import { UserEntity } from "../../entities/user-entity";
 import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
 
 export class CreateUserUseCase implements UseCase{
   async execute(request: UserEntity): Promise<HttpResponse<any>> {
@@ -26,7 +27,11 @@ export class CreateUserUseCase implements UseCase{
         },
       });
 
-      return successResponse(user);
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET ?? 'pn-clique-reserve-system', { expiresIn: '1d' });
+
+      const data = { user, token };
+
+      return successResponse(data);
 
     }catch (error: any) {
       return errorResponse(error);
