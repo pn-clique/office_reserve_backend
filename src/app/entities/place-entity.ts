@@ -1,6 +1,5 @@
-import { TYPE_USER } from "../../@shareds/enums";
-
 export interface PlaceEntity {
+  id: string;
   name: string;
   capacity: number;
   photo: string;

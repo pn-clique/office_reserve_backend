@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { _Controller } from "../../../@shareds/contracts";
-import { CreatePlaceUseCase } from "../../../app/useCases";
+import { EditPlaceUseCase } from "../../../app/useCases";
 import { CustomFile } from "../../../helpers/interfaces/file.interface";
 import { PlaceEntity } from "../../../app/entities";
 
 
-export class CreatePlaceController implements _Controller {
+export class EditPlaceController implements _Controller {
   async handle(request: Request, response: Response): Promise<Response> {
     const { name, capacity } = request.body;
+    const { id } = request.params;
     let photo: string = ''; 
       if (request.file) {
         const file = request.file as CustomFile
@@ -16,9 +17,9 @@ export class CreatePlaceController implements _Controller {
 
       const capacityInt = +capacity
 
-    const useCase = new CreatePlaceUseCase();
+    const useCase = new EditPlaceUseCase();
 
-    const index = await useCase.execute({ name, capacity: capacityInt, photo } as PlaceEntity);
+    const index = await useCase.execute({ id, name, capacity: capacityInt, photo } as PlaceEntity);
     return response.status(index.status).json(index.data);
   }
 }
