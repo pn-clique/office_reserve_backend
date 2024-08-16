@@ -6,13 +6,7 @@ import {
   UseCase,
 } from "../../../@shareds/contracts";
 import Prisma from "../../../infra/database/prisma-db";
-// import { PlaceEntity } from "../../entities/place-entity";
-interface PlaceEntity {
-  id: string;
-  name: string;
-  capacity: number;
-  photo: string;
-}
+import { PlaceEntity } from "../../entities/place-entity";
 
 export class EditPlaceUseCase implements UseCase {
   async execute(request: PlaceEntity): Promise<HttpResponse<any>> {

@@ -20,6 +20,7 @@ model User {
   password      String?         @db.VarChar(250)
   type_user     UserType
   phone         String?         @db.VarChar(13)
+  photo         String?         @db.Text
   Booking       Booking[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt

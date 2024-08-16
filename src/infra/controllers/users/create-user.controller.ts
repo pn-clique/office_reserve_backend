@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { _Controller } from "../../../@shareds/contracts";
 import { CreateUserUseCase } from "../../../app/useCases";
-import { TYPE_USER } from "../../../@shareds/enums";
+import { UserEntity } from "../../../app/entities";
 
 export class CreateUserController implements _Controller {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { name, email, password, phone } = request.body;
+    const { name, email, password, phone, typeUser } = request.body;
 
     const useCase = new CreateUserUseCase();
     const index = await useCase.execute({
@@ -13,8 +13,8 @@ export class CreateUserController implements _Controller {
       email,
       password,
       phone,
-      typeUser: TYPE_USER.USER,
-    });
+      typeUser,
+    } as UserEntity);
     return response.status(index.status).json(index.data);
   }
 }
