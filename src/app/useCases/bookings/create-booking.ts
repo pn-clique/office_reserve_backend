@@ -12,12 +12,12 @@ import { EmisIntegrationService } from "../emis/create-reference-payment";
 export class CreateBookingUseCase implements UseCase {
   async execute(request: ICreateBookingRequest): Promise<HttpResponse<any>> {
     try {
-      const { description, finalDate, initDate, modalityId, placeId, email, endTime, startTime } = request;
+      const { description, finalDate, initDate, modalityId, placeId, email, endTime, name, phone, startTime } = request;
       let user;
 
       const userExists = await Prisma.user.findUnique({ where: { email } });
       if (!userExists) {
-        return badRequestResponse({ message: 'User not found' });
+        user = await Prisma.user.create({ data: { email, name, phone, type_user: TYPE_USER.USER } });
       } else {
         user = userExists;
       }
