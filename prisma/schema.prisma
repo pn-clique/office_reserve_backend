@@ -63,8 +63,8 @@ model Booking {
   modality      Modality        @relation(fields: [modality_id], references: [id])
   init_date     DateTime
   final_date    DateTime
-  start_time    DateTime
-  end_time      DateTime
+  start_time    String
+  end_time      String
   status        BookingStatus
   description   String?         @db.Text
   reference     String          @unique
