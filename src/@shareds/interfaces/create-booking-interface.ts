@@ -5,8 +5,8 @@ export interface ICreateBookingRequest {
   initDate: Date;
   finalDate: Date;
   description: string;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   email: string;
   name: string;
   phone: string;
