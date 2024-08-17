@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
 
 const corsOrigin ={
-    origin:'http://localhost:3000',
+    origin:'https://office-reserve-frontend-b33db44zx.vercel.app',
     credentials:true,            
     optionSuccessStatus:200
 }
