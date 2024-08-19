@@ -17,7 +17,7 @@ export class EditUserController implements _Controller {
 
     const useCase = new EditUserUseCase();
 
-    const index = await useCase.execute({ id, name, phone, photo } as UserEntity);
+    const index = await useCase.execute({ id, name, phone, photo, email } as UserEntity);
     return response.status(index.status).json(index.data);
   }
 }
