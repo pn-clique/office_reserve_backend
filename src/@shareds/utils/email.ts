@@ -13,7 +13,7 @@ export class SendMail {
   async execute({ to, subject, html, text }: IEmailItems): Promise<any> {
     try {
       const transporter = nodemailer.createTransport({
-        host: 'mail.acimadamedia.ao',
+        host: 'smtp.gmail.com',
         port: 465,
         secure: true,
         auth: {

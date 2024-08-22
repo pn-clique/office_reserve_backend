@@ -3,4 +3,7 @@ export * from './edit-user.controller';
 export * from './all-users.controller';
 export * from './user-by-id.controller';
 export * from './create-user.controller';
+export * from './user-by-email.controller';
 export * from './login-social-user.controller';
+export * from './reset-password-user.controller';
+export * from './forgot-password-user.controller';

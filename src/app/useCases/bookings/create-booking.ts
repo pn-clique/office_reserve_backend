@@ -64,7 +64,7 @@ export class CreateBookingUseCase implements UseCase {
       //   firstName: user.name.split(' ')[0],
       //   lastName: user.name.split(' ')[1],
       //   email: user.email,
-      //   mobile: String(user.phone).trim(),
+      //   mobile: String(user.phone).trim() || phone,
       //   identifier: booking.reference,
       // });
 

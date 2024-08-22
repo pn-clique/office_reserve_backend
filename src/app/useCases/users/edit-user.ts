@@ -8,7 +8,6 @@ import {
 import Prisma from "../../../infra/database/prisma-db";
 import { UserEntity } from "../../entities";
 import bcrypt from "bcrypt";
-import jwt from 'jsonwebtoken';
 
 export class EditUserUseCase implements UseCase {
   async execute(request: UserEntity): Promise<HttpResponse<any>> {

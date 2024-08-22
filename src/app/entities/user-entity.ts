@@ -7,5 +7,7 @@ export interface UserEntity {
   password?: string;
   phone: string;
   photo?: string;
+  password_token?: string;
+  password_Expires?: Date;
   typeUser: TYPE_USER;
 }

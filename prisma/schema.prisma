@@ -14,16 +14,18 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(uuid())
-  name          String          @db.VarChar(500)
-  email         String          @unique @db.VarChar(256)
-  password      String?         @db.VarChar(250)
-  type_user     UserType
-  phone         String?         @db.VarChar(13)
-  photo         String?         @db.Text
-  Booking       Booking[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id                        String          @id @default(uuid())
+  name                      String          @db.VarChar(500)
+  email                     String          @unique @db.VarChar(256)
+  password                  String?         @db.VarChar(250)
+  type_user                 UserType
+  phone                     String?         @db.VarChar(13)
+  photo                     String?         @db.Text
+  password_token            String?         @db.VarChar(13)
+  password_Expires          DateTime?       
+  Booking                   Booking[]
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @updatedAt
 
   @@map("users")
 }
