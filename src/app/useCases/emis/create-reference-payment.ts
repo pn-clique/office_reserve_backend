@@ -31,13 +31,11 @@ export class EmisIntegrationService {
           amount: Number(value),
           gateway_methods: ['MulticaixaExpress'],
           details: plan,
-          // ipn_url: `${process.env.BASE_URL}callback-above`,
           ipn_url: `${process.env.API_URL}/callback`,
-          cancel_url: 'http://example.com/cancel_url.php',
-          success_url: 'http://example.com/success_url.php',
-          site_name: 'PITEU',
-          site_logo:
-            'https://bc.piteu.ao/storage/business/2022-12-15-639a5e85b410d.png',
+          cancel_url:  'http://localhost:3001/user', //'http://example.com/cancel_url.php',
+          success_url: 'http://localhost:3001/user', // 'http://example.com/success_url.php',
+          site_name: 'PN Clique Coworking',
+          site_logo: 'https://storage.googleapis.com/biskato-557d0.appspot.com/1724294737826.jpeg',
           checkout_theme: 'light',
           customer: {
             first_name: firstName,

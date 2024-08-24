@@ -56,26 +56,24 @@ export class CreateBookingUseCase implements UseCase {
           capacity: reducingCapacity,
         } });
 
-      // const emisIntegrationService = new EmisIntegrationService();
+      const emisIntegrationService = new EmisIntegrationService();
       
-      // const payment = emisIntegrationService.generatePaymentReference({
-      //   value: modalities.price,
-      //   plan: `${place.name} - ${modalities.name}`,
-      //   firstName: user.name.split(' ')[0],
-      //   lastName: user.name.split(' ')[1],
-      //   email: user.email,
-      //   mobile: String(user.phone).trim() || phone,
-      //   identifier: booking.reference,
-      // });
+      const payment = emisIntegrationService.generatePaymentReference({
+        value: modalities.price,
+        plan: `${place.name} - ${modalities.name}`,
+        firstName: user.name.split(' ')[0],
+        lastName: user.name.split(' ')[1],
+        email: user.email,
+        mobile: String(user.phone).trim() || phone,
+        identifier: booking.reference,
+      });
 
-      // const purchaseOrder = new CreatePurchaseUseCase();
-      // await purchaseOrder.execute({ bookingId: booking.id });
-
-      // const data = { booking, payment };
+      const purchaseOrder = new CreatePurchaseUseCase();
+      await purchaseOrder.execute({ bookingId: booking.id });
 
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET ?? 'pn-clique-reserve-system', { expiresIn: '1d' });
 
-      const data = { booking,  user, token };
+      const data = { booking,  user, token, payment };
       return successResponse(data);
     }catch (error: any) {
       return errorResponse(error);
