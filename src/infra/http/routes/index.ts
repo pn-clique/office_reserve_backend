@@ -3,6 +3,7 @@ import placeRoutes from './places.routes';
 import modalitiesRoutes from './modality.routes';
 import bookingRoutes from './booking.routes';
 import userRoutes from './users.routes';
+import callbackRoutes from './callback.routes';
 
 const router = Router();
 
@@ -11,6 +12,7 @@ router.get('/', (req, res) => {
 });
 
 router.use(userRoutes)
+router.use(callbackRoutes);
 
 router.use(placeRoutes);
 router.use(modalitiesRoutes);

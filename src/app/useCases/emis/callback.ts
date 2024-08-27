@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 import { BOOKING_STATUS } from "../../../@shareds/enums/booking-status";
 import Prisma from "../../../infra/database/prisma-db";
-import { errorResponse } from "../../../@shareds/contracts";
+import { errorResponse, successResponse } from "../../../@shareds/contracts";
 import { SendMail } from "../../../@shareds/utils/email";
 
-interface ICallbackProps {
+export interface ICallbackProps {
   status: any;
   signature: any;
   identifier: any;
@@ -36,7 +36,9 @@ export class CallBackUseCase {
             startTime: dayjs(booking.start_time).format('HH:mm'),
           });
         }
-        return true;
+
+          // todo: notificar a adminstração que ouve um pagamento confirmado e passar os dados da reserva
+        return successResponse(true);
     } catch (error: any) {
       return errorResponse(error.message);
     }
