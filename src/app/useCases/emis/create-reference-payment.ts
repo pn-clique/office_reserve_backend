@@ -23,8 +23,6 @@ export class EmisIntegrationService {
         identifier,
       } = input;
 
-      console.log(input);
-
 
       const generateReference = await axios.post(
         `${process.env.PAYMENT_REFERENCE_URL}`,
@@ -36,11 +34,11 @@ export class EmisIntegrationService {
           gateway_methods: ['MulticaixaExpress'],
           details: plan,
           ipn_url: `${process.env.API_URL}/callback`,
-          cancel_url:  'http://localhost:3001/user',
-          success_url: 'http://localhost:3001/user',
+          cancel_url:  'https://coworking.pnclique.com/user',
+          success_url: 'https://coworking.pnclique.com/user',
           site_name: 'PN Clique Coworking',
-          site_logo: 'https://storage.googleapis.com/biskato-557d0.appspot.com/1724294737826.jpeg',
-          checkout_theme: 'light',
+          site_logo: 'https://i.ibb.co/6rw0nGZ/PN.jpg',
+          checkout_theme: 'dark',
           customer: {
             first_name: firstName,
             last_name: lastName,
