@@ -31,7 +31,7 @@ export class CreateBookingUseCase implements UseCase {
         startTime,
       } = request;
       let user;
-
+      
       const userExists = await Prisma.user.findUnique({ where: { email } });
       if (!userExists) {
         user = await Prisma.user.create({
@@ -79,6 +79,13 @@ export class CreateBookingUseCase implements UseCase {
           capacity: reducingCapacity,
         },
       });
+      
+      await Prisma.place.update({
+        where: {id: place.id},	
+        data: {
+          most_required:{increment:1}          
+        }
+      })
 
       const priceWithoutDot = modalities.price.toString().replace(".", "");
       const amount = parseFloat(priceWithoutDot);

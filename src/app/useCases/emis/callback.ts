@@ -33,7 +33,7 @@ export class CallBackUseCase {
             name: booking.user.name,
             phone: booking.user.phone ?? '',
             startDate: dayjs(booking.init_date).format('DD/MM/YYYY'),
-            startTime: dayjs(booking.start_time).format('HH:mm'),
+            startTime: booking.start_time,
           });
         }
 
