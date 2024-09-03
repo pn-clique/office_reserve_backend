@@ -35,7 +35,7 @@ export class EmisIntegrationService {
           details: plan,
           ipn_url: `${process.env.API_URL}/callback`,
           cancel_url:  'https://coworking.pnclique.com/user',
-          success_url: 'https://coworking.pnclique.com/user',
+          success_url: 'http://localhost:3001/user', //'https://coworking.pnclique.com/user',
           site_name: 'PN Clique Coworking',
           site_logo: 'https://i.ibb.co/6rw0nGZ/PN.jpg',
           checkout_theme: 'dark',

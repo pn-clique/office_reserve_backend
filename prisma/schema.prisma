@@ -31,16 +31,26 @@ model User {
 }
 
 model Place {
-  id           String    @id @default(uuid())
-  name         String    @db.VarChar(250)
-  capacity     Int
-  photo        String?   @db.Text
-  most_required Int @default(0)
-  Booking      Booking[]
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id            String    @id @default(uuid())
+  name          String    @db.VarChar(250)
+  capacity      Int
+  photo         String?   @db.Text
+  most_required Int?      @default(0)
+  Booking       Booking[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   @@map("places")
+}
+
+model Finance {
+  id            String    @id @default(uuid())
+  value         Float?
+  Booking       Booking[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("finances")
 }
 
 model Modality {
@@ -64,6 +74,8 @@ model Booking {
   place         Place           @relation(fields: [place_id], references: [id])
   modality_id   String
   modality      Modality        @relation(fields: [modality_id], references: [id])
+  finance_id    String
+  finance       Finance         @relation(fields: [finance_id], references: [id])
   init_date     DateTime
   final_date    DateTime
   start_time    String

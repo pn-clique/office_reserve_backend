@@ -5,6 +5,7 @@ export interface BookingEntity {
   id: string
   userId: string;
   placeId: string;
+  financeId: string;
   modalityId: string;
   initDate: Date;
   finalDate: Date;

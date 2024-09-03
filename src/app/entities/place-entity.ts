@@ -3,4 +3,5 @@ export interface PlaceEntity {
   name: string;
   capacity: number;
   photo: string;
+  most_required?: number
 }

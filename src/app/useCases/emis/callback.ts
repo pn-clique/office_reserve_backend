@@ -15,30 +15,48 @@ export class CallBackUseCase {
     try {
       const booking = await Prisma.booking.findUnique({
         where: { reference: identifier },
-        include: { modality: true, user: true },
+        include: { modality: true, user: true, finance: true },
       });
 
-      if (status === 'success' && booking) {
-          await Prisma.booking.update({
-            where: { reference: identifier },
-            data: { status: BOOKING_STATUS.CONFIRMED },
-          })
+      console.log('booking call back : ', booking)
 
-          await this.notifyUserByEmail({
-            amount: data.amount,
-            email: booking.user.email,
-            identifier,
-            description: booking.description ?? '',
-            modality: booking.modality.name,
-            name: booking.user.name,
-            phone: booking.user.phone ?? '',
-            startDate: dayjs(booking.init_date).format('DD/MM/YYYY'),
-            startTime: booking.start_time,
-          });
-        }
+      if (status === "success" && booking) {
+        await Prisma.booking.update({
+          where: { reference: identifier },
+          data: { status: BOOKING_STATUS.CONFIRMED },
+        });
 
-          // todo: notificar a adminstração que ouve um pagamento confirmado e passar os dados da reserva
-        return successResponse(true);
+        // const finance = await Prisma.finance.findUnique({
+        //   where: { id: booking.finance_id },
+        // });
+
+        // const numberValue = Math.trunc(data.amount)
+        // const addValue = finance?.value && finance.value + numberValue;
+
+        // console.log({ finance })
+        // console.log({ numberValue })
+        // console.log({ addValue })
+
+        // await Prisma.finance.update({
+        //   where: { id: finance?.id },
+        //   data: { value: addValue },
+        // });
+
+        await this.notifyUserByEmail({
+          amount: data.amount,
+          email: booking.user.email,
+          identifier,
+          description: booking.description ?? "",
+          modality: booking.modality.name,
+          name: booking.user.name,
+          phone: booking.user.phone ?? "",
+          startDate: dayjs(booking.init_date).format("DD/MM/YYYY"),
+          startTime: booking.start_time,
+        });
+      }
+
+      // todo: notificar a adminstração que ouve um pagamento confirmado e passar os dados da reserva
+      return successResponse(true);
     } catch (error: any) {
       return errorResponse(error.message);
     }
@@ -47,12 +65,12 @@ export class CallBackUseCase {
     identifier,
     amount,
     email,
-     name,
-     phone,
-     startDate,
-     startTime,
-     modality,
-     description,
+    name,
+    phone,
+    startDate,
+    startTime,
+    modality,
+    description,
   }: {
     identifier: string;
     amount: number;
@@ -64,9 +82,21 @@ export class CallBackUseCase {
     modality: string;
     description: string;
   }) {
+    // function formatCurrency(value: number, currencySymbol: string): string {
+    //   // Formata o número para ter duas casas decimais
+    //   const formattedValue = value.toFixed(2);
+    //   // Substitui o ponto decimal por vírgula
+    //   const valueWithComma = formattedValue.replace(".", ",");
+    //   // Retorna o valor formatado com o símbolo da moeda
+    //   return `${valueWithComma} ${currencySymbol}`;
+    // }
+
+    // const formatted = formatCurrency(amount, "KZ");
+
+    // console.log({formatted}); 
 
     return new SendMail().execute({
-      to: email ?? '',
+      to: email ?? "",
       html: `
         <!DOCTYPE html>
 <html lang="pt-BR">
@@ -104,7 +134,7 @@ export class CallBackUseCase {
 </html>
 
       `,
-      subject: 'Reserva Confirmada com Sucesso!',
+      subject: "Reserva Confirmada com Sucesso!",
     });
   }
 }

@@ -19,7 +19,7 @@ export class CreateBookingController implements _Controller {
       endTime,
       name,
       phone,
-      startTime
+      startTime,
     });
 
     return response.status(index.status).json(index.data);

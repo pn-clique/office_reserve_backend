@@ -31,7 +31,7 @@ export class CreateBookingUseCase implements UseCase {
         startTime,
       } = request;
       let user;
-      
+
       const userExists = await Prisma.user.findUnique({ where: { email } });
       if (!userExists) {
         user = await Prisma.user.create({
@@ -41,12 +41,13 @@ export class CreateBookingUseCase implements UseCase {
         user = userExists;
       }
 
-      const [modalities, place] = await Promise.all([
+      const [modalities, place, finance] = await Promise.all([
         Prisma.modality.findUnique({ where: { id: modalityId } }),
         Prisma.place.findUnique({ where: { id: placeId } }),
+        Prisma.finance.findFirst(),
       ]);
 
-      if (!modalities || !place) {
+      if (!modalities || !place || !finance) {
         return badRequestResponse({ message: "Modality or Place not found" });
       }
 
@@ -66,33 +67,29 @@ export class CreateBookingUseCase implements UseCase {
           description: description,
           start_time: startTime,
           end_time: endTime,
+          finance_id: finance?.id ?? '',
           status: BOOKING_STATUS.PENDING,
           reference: String(GenerateReference()),
         },
       });
 
       const reducingCapacity = place.capacity - 1;
+      const addMostRequired = place.most_required && place.most_required + 1;
 
       await Prisma.place.update({
         where: { id: place.id },
         data: {
           capacity: reducingCapacity,
+          most_required: addMostRequired,
         },
       });
-      
-      await Prisma.place.update({
-        where: {id: place.id},	
-        data: {
-          most_required:{increment:1}          
-        }
-      })
 
       const priceWithoutDot = modalities.price.toString().replace(".", "");
       const amount = parseFloat(priceWithoutDot);
 
       const emisIntegrationService = new EmisIntegrationService();
       const payment = await emisIntegrationService.generatePaymentReference({
-        value: 50,//amount,
+        value: 50, //amount,
         plan: `${place.name} - ${modalities.name}`,
         firstName: user.name.split(" ")[0],
         lastName: user.name.split(" ")[1],
@@ -111,7 +108,7 @@ export class CreateBookingUseCase implements UseCase {
       );
 
       const data = { booking, user, token, payment };
-      console.log({ payment })
+      console.log({ data })
       return successResponse(data);
     } catch (error: any) {
       return errorResponse(error);
