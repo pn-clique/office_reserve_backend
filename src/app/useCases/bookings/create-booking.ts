@@ -72,11 +72,13 @@ export class CreateBookingUseCase implements UseCase {
       });
 
       const reducingCapacity = place.capacity - 1;
+      const mostRequired = place.most_required && place.most_required + 1;
 
       await Prisma.place.update({
         where: { id: place.id },
         data: {
           capacity: reducingCapacity,
+          most_required: mostRequired
         },
       });
       

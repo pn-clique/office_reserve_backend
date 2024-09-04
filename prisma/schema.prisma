@@ -31,14 +31,14 @@ model User {
 }
 
 model Place {
-  id           String    @id @default(uuid())
-  name         String    @db.VarChar(250)
-  capacity     Int
-  photo        String?   @db.Text
-  most_required Int @default(0)
-  Booking      Booking[]
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id            String    @id @default(uuid())
+  name          String    @db.VarChar(250)
+  capacity      Int
+  most_required Int?      @default(1)
+  photo         String?   @db.Text
+  Booking       Booking[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   @@map("places")
 }
