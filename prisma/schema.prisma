@@ -43,6 +43,15 @@ model Place {
   @@map("places")
 }
 
+model Finance {
+  id            String    @id @default(uuid())
+  value         Float     @default(1)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("finances")
+}
+
 model Modality {
   id          String    @id @default(uuid())
   name        String    @db.VarChar(250)
