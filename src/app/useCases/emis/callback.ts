@@ -19,26 +19,27 @@ export class CallBackUseCase {
       });
 
       if (status === 'success' && booking) {
-          await Prisma.booking.update({
-            where: { reference: identifier },
-            data: { status: BOOKING_STATUS.CONFIRMED },
-          })
+        await Prisma.booking.update({
+          where: { reference: identifier },
+          data: { status: BOOKING_STATUS.CONFIRMED },
+        })
 
-          await this.notifyUserByEmail({
-            amount: data.amount,
-            email: booking.user.email,
-            identifier,
-            description: booking.description ?? '',
-            modality: booking.modality.name,
-            name: booking.user.name,
-            phone: booking.user.phone ?? '',
-            startDate: dayjs(booking.init_date).format('DD/MM/YYYY'),
-            startTime: dayjs(booking.start_time).format('HH:mm'),
-          });
-        }
+        await this.notifyUserByEmail({
+          amount: data.amount,
+          email: booking.user.email,
+          identifier,
+          description: booking.description ?? '',
+          modality: booking.modality.name,
+          name: booking.user.name,
+          phone: booking.user.phone ?? '',
+          startDate: dayjs(booking.init_date).format('DD/MM/YYYY'),
+          startTime: dayjs(booking.start_time).format('HH:mm'),
+        });
+      }
 
-          // todo: notificar a adminstração que ouve um pagamento confirmado e passar os dados da reserva
-        return successResponse(true);
+    console.log(booking);
+
+      return successResponse(true);
     } catch (error: any) {
       return errorResponse(error.message);
     }
@@ -47,12 +48,12 @@ export class CallBackUseCase {
     identifier,
     amount,
     email,
-     name,
-     phone,
-     startDate,
-     startTime,
-     modality,
-     description,
+    name,
+    phone,
+    startDate,
+    startTime,
+    modality,
+    description,
   }: {
     identifier: string;
     amount: number;
