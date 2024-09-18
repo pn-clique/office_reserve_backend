@@ -66,6 +66,14 @@ export class CallBackUseCase {
     description: string;
   }) {
 
+    function formatCurrency(value: number, currencySymbol: string): string {
+      const formattedValue = value.toFixed(2);
+      const valueWithComma = formattedValue.replace(".", ",");
+      return `${valueWithComma} ${currencySymbol}`;
+    }
+
+    const formatted = formatCurrency(amount, "KZ");
+
     return new SendMail().execute({
       to: email ?? '',
       html: `
@@ -79,7 +87,7 @@ export class CallBackUseCase {
 <body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4;">
     <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <div style="text-align: center; border-bottom: 1px solid #e0e0e0; padding-bottom: 10px; margin-bottom: 20px;">
-            <img src="logo_url_aqui" alt="Logo da Empresa" style="max-width: 150px;">
+            <img src="https://i.ibb.co/6rw0nGZ/PN.jpg" alt="Logo da Empresa" style="max-width: 150px;">
             <h1 style="margin: 0; color: #333333;">Relatório de Reserva #${identifier}</h1>
         </div>
         <div style="margin-bottom: 20px;">
@@ -94,7 +102,7 @@ export class CallBackUseCase {
             <p style="margin: 5px 0; color: #666666;"><strong>Hora da Reserva:</strong> ${startTime}</p>
             <p style="margin: 5px 0; color: #666666;"><strong>Serviço Reservado:</strong> ${modality}</p>
             <p style="margin: 5px 0; color: #666666;"><strong>Observações:</strong> ${description}</p>
-            <p style="margin: 5px 0; color: #666666;"><strong>TOTAL PAGO:</strong> ${amount}</p>
+            <p style="margin: 5px 0; color: #666666;"><strong>TOTAL PAGO:</strong> ${formatted}</p>
         </div>
         <div style="text-align: center; color: #999999; font-size: 12px;">
             <p style="margin: 5px 0;">&copy; ${new Date().getFullYear()} PN Clique. Todos os direitos reservados.</p>
