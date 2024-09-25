@@ -89,10 +89,10 @@ export class CreateBookingUseCase implements UseCase {
       const payment = await emisIntegrationService.generatePaymentReference({
         value: amount,
         plan: `${place.name} - ${modalities.name}`,
-        firstName: user.name.split(" ")[0] ?? name,
-        lastName: user.name.split(" ")[1] ?? name,
-        email: user.email ?? email,
-        mobile: String(user.phone).trim() ?? phone,
+        firstName: user.name.split(" ")[0],
+        lastName: user.name.split(" ")[1],
+        email: user.email,
+        mobile: String(user.phone).trim(),
         identifier: booking.reference,
       });
 
