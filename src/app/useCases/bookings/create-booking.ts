@@ -81,25 +81,18 @@ export class CreateBookingUseCase implements UseCase {
           most_required: mostRequired
         },
       });
-      
-      await Prisma.place.update({
-        where: {id: place.id},	
-        data: {
-          most_required:{increment:1}          
-        }
-      })
 
       const priceWithoutDot = modalities.price.toString().replace(".", "");
       const amount = parseFloat(priceWithoutDot);
 
       const emisIntegrationService = new EmisIntegrationService();
       const payment = await emisIntegrationService.generatePaymentReference({
-        value: amount,
+        value: 50,//amount,
         plan: `${place.name} - ${modalities.name}`,
-        firstName: user.name.split(" ")[0],
-        lastName: user.name.split(" ")[1] ?? '',
-        email: user.email,
-        mobile: String(user.phone).trim(),
+        firstName: user.name.split(" ")[0] ?? name,
+        lastName: user.name.split(" ")[1] ?? name,
+        email: user.email ?? email,
+        mobile: String(user.phone).trim() ?? phone,
         identifier: booking.reference,
       });
 

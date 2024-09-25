@@ -3,6 +3,7 @@ import { BOOKING_STATUS } from "../../../@shareds/enums/booking-status";
 import Prisma from "../../../infra/database/prisma-db";
 import { errorResponse, successResponse } from "../../../@shareds/contracts";
 import { SendMail } from "../../../@shareds/utils/email";
+import currency from "currency.js";
 
 export interface ICallbackProps {
   status: any;
@@ -18,26 +19,37 @@ export class CallBackUseCase {
         include: { modality: true, user: true },
       });
 
-      if (status === 'success' && booking) {
+      if (status === "success" && booking) {
         await Prisma.booking.update({
           where: { reference: identifier },
           data: { status: BOOKING_STATUS.CONFIRMED },
-        })
+        });
+
+        const finance = await Prisma.finance.findFirst();
+
+        const numberValue = Math.trunc(data.amount);
+        let addValue: number;
+        if (finance) {
+          addValue = finance.value + numberValue;
+
+          await Prisma.finance.update({
+            where: { id: finance?.id },
+            data: { value: addValue },
+          });
+        }
 
         await this.notifyUserByEmail({
           amount: data.amount,
           email: booking.user.email,
           identifier,
-          description: booking.description ?? '',
+          description: booking.description ?? "",
           modality: booking.modality.name,
           name: booking.user.name,
-          phone: booking.user.phone ?? '',
-          startDate: dayjs(booking.init_date).format('DD/MM/YYYY'),
+          phone: booking.user.phone ?? "",
+          startDate: dayjs(booking.init_date).format("DD/MM/YYYY"),
           startTime: booking.start_time,
         });
       }
-
-      console.log(booking);
 
       return successResponse(true);
     } catch (error: any) {
@@ -65,15 +77,12 @@ export class CallBackUseCase {
     modality: string;
     description: string;
   }) {
-
-    function formatCurrency(value: number, currencySymbol: string): string {
-      const formattedValue = Number(value.toFixed(2));
-      const valueWithComma = String(formattedValue).replace(".", ",");
-      return `${valueWithComma} ${currencySymbol}`;
-    }
+    const KZ = (value: currency.Any) =>
+      currency(value, { precision: 0, symbol: "kz" });
+    const kzFormatted = KZ(amount).format();
 
     return new SendMail().execute({
-      to: email ?? '',
+      to: email ?? "",
       html: `
         <!DOCTYPE html>
 <html lang="pt-BR">
@@ -100,7 +109,7 @@ export class CallBackUseCase {
             <p style="margin: 5px 0; color: #666666;"><strong>Hora da Reserva:</strong> ${startTime}</p>
             <p style="margin: 5px 0; color: #666666;"><strong>Serviço Reservado:</strong> ${modality}</p>
             <p style="margin: 5px 0; color: #666666;"><strong>Observações:</strong> ${description}</p>
-            <p style="margin: 5px 0; color: #666666;"><strong>TOTAL PAGO:</strong> ${formatCurrency(amount, "KZ")}</p>
+            <p style="margin: 5px 0; color: #666666;"><strong>TOTAL PAGO:</strong> ${kzFormatted}</p>
         </div>
         <div style="text-align: center; color: #999999; font-size: 12px;">
             <p style="margin: 5px 0;">&copy; ${new Date().getFullYear()} PN Clique. Todos os direitos reservados.</p>
@@ -111,7 +120,7 @@ export class CallBackUseCase {
 </html>
 
       `,
-      subject: 'Reserva Confirmada com Sucesso!',
+      subject: "Reserva Confirmada com Sucesso!",
     });
   }
 }

@@ -24,7 +24,6 @@ export class EmisIntegrationService {
         identifier,
       } = input;
 
-      console.log(input);
       const generateReference = await axios.post(
         `${process.env.PAYMENT_REFERENCE_URL}`,
         {
@@ -34,7 +33,7 @@ export class EmisIntegrationService {
           amount: Number(value),
           gateway_methods: ['MulticaixaExpress'],
           details: plan,
-          ipn_url: 'https://office-reserve-backend.onrender.com/callback-office-reserve',
+          ipn_url: `${process.env.API_URL}/callback-office-reserve`,
           cancel_url:  'https://coworking.pnclique.com/user',
           success_url: 'https://coworking.pnclique.com/user',
           site_name: 'PN Clique Coworking',
