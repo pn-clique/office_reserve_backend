@@ -32,7 +32,7 @@ export class EmisIntegrationService {
           amount: Number(value),
           gateway_methods: ['MulticaixaExpress'],
           details: plan,
-          ipn_url:  'https://office-reserve-backend.onrender.com/callback',//`${process.env.API_URL}/callback`,
+          ipn_url:  `${process.env.API_URL}/callback`,
           cancel_url:  'https://coworking.pnclique.com/user',
           success_url: 'https://coworking.pnclique.com/user',
           site_name: 'PN Clique Coworking',

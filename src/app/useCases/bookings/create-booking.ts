@@ -71,6 +71,8 @@ export class CreateBookingUseCase implements UseCase {
         },
       });
 
+      console.log({ booking })
+
       const reducingCapacity = place.capacity - 1;
       const mostRequired = place.most_required && place.most_required + 1;
 
@@ -113,7 +115,7 @@ export class CreateBookingUseCase implements UseCase {
       );
 
       const data = { booking, user, token, payment };
-      console.log({ payment })
+      console.log({ data })
       return successResponse(data);
     } catch (error: any) {
       return errorResponse(error);
