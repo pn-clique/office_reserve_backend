@@ -97,11 +97,13 @@ export class CreateBookingUseCase implements UseCase {
         value: 50,//amount,
         plan: `${place.name} - ${modalities.name}`,
         firstName: user.name.split(" ")[0],
-        lastName: user.name.split(" ")[1],
+        lastName: user.name.split(" ")[1] ?? '',
         email: user.email,
-        mobile: String(user.phone).trim() || phone,
+        mobile: String(user.phone).trim(),
         identifier: booking.reference,
       });
+
+      // TODO: Validar se a pessoa passou o nome completo ou não
 
       const purchaseOrder = new CreatePurchaseUseCase();
       await purchaseOrder.execute({ bookingId: booking.id });

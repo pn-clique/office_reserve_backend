@@ -37,11 +37,11 @@ export class CallBackUseCase {
         });
       }
 
-    console.log(booking);
+      console.log(booking);
 
       return successResponse(true);
     } catch (error: any) {
-      return errorResponse(error.message);
+      return errorResponse(error);
     }
   }
   private async notifyUserByEmail({
@@ -66,13 +66,13 @@ export class CallBackUseCase {
     description: string;
   }) {
 
-    function formatCurrency(value: number, currencySymbol: string): string {
-      const formattedValue = value.toFixed(2);
-      const valueWithComma = formattedValue.replace(".", ",");
-      return `${valueWithComma} ${currencySymbol}`;
-    }
+    // function formatCurrency(value: number, currencySymbol: string): string {
+    //   const formattedValue = Number(value.toFixed(2));
+    //   const valueWithComma = String(formattedValue).replace(".", ",");
+    //   return `${valueWithComma} ${currencySymbol}`;
+    // }
 
-    const formatted = formatCurrency(amount, "KZ");
+    // const formatted = formatCurrency(amount, "KZ");
 
     return new SendMail().execute({
       to: email ?? '',
@@ -102,7 +102,7 @@ export class CallBackUseCase {
             <p style="margin: 5px 0; color: #666666;"><strong>Hora da Reserva:</strong> ${startTime}</p>
             <p style="margin: 5px 0; color: #666666;"><strong>Serviço Reservado:</strong> ${modality}</p>
             <p style="margin: 5px 0; color: #666666;"><strong>Observações:</strong> ${description}</p>
-            <p style="margin: 5px 0; color: #666666;"><strong>TOTAL PAGO:</strong> ${formatted}</p>
+            <p style="margin: 5px 0; color: #666666;"><strong>TOTAL PAGO:</strong> ${amount}</p>
         </div>
         <div style="text-align: center; color: #999999; font-size: 12px;">
             <p style="margin: 5px 0;">&copy; ${new Date().getFullYear()} PN Clique. Todos os direitos reservados.</p>

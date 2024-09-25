@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -19,13 +13,13 @@ model User {
   email            String    @unique @db.VarChar(256)
   password         String?   @db.VarChar(250)
   type_user        UserType
-  phone            String?   @db.VarChar(13)
-  photo            String?   @db.Text
-  password_token   String?   @db.VarChar(13)
-  password_Expires DateTime?
-  Booking          Booking[]
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
+  phone            String?   @db.VarChar(13)
+  password_Expires DateTime?
+  password_token   String?   @db.VarChar(13)
+  photo            String?
+  Booking          Booking[]
 
   @@map("users")
 }
@@ -34,20 +28,20 @@ model Place {
   id            String    @id @default(uuid())
   name          String    @db.VarChar(250)
   capacity      Int
-  most_required Int?      @default(1)
-  photo         String?   @db.Text
-  Booking       Booking[]
+  photo         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  most_required Int?      @default(1)
+  Booking       Booking[]
 
   @@map("places")
 }
 
 model Finance {
-  id            String    @id @default(uuid())
-  value         Float     @default(1)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  value     Float    @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("finances")
 }
@@ -55,12 +49,12 @@ model Finance {
 model Modality {
   id          String    @id @default(uuid())
   name        String    @db.VarChar(250)
-  description String    @db.Text
+  description String
   price       Float
   duration    Int
-  Booking     Booking[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  Booking     Booking[]
 
   @@map("modalities")
 }
@@ -68,20 +62,20 @@ model Modality {
 model Booking {
   id            String          @id @default(uuid())
   user_id       String
-  user          User            @relation(fields: [user_id], references: [id])
   place_id      String
-  place         Place           @relation(fields: [place_id], references: [id])
   modality_id   String
-  modality      Modality        @relation(fields: [modality_id], references: [id])
   init_date     DateTime
   final_date    DateTime
-  start_time    String
-  end_time      String
   status        BookingStatus
-  description   String?         @db.Text
   reference     String          @unique
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
+  description   String?
+  end_time      String
+  start_time    String
+  modality      Modality        @relation(fields: [modality_id], references: [id])
+  place         Place           @relation(fields: [place_id], references: [id])
+  user          User            @relation(fields: [user_id], references: [id])
   PurchaseOrder PurchaseOrder[]
 
   @@map("bookings")
@@ -90,10 +84,10 @@ model Booking {
 model PurchaseOrder {
   id          String   @id @default(uuid())
   booking_id  String
-  booking     Booking  @relation(fields: [booking_id], references: [id])
   total_price Float
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  booking     Booking  @relation(fields: [booking_id], references: [id])
 
   @@map("purchase_orders")
 }
