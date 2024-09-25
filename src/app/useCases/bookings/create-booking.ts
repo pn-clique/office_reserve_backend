@@ -110,12 +110,11 @@ export class CreateBookingUseCase implements UseCase {
 
       const token = jwt.sign(
         { userId: user.id },
-        process.env.JWT_SECRET ?? "pn-clique-reserve-system",
+        process.env.JWT_SECRET!,
         { expiresIn: "1d" }
       );
 
       const data = { booking, user, token, payment };
-      console.log({ payment })
       return successResponse(data);
     } catch (error: any) {
       return errorResponse(error);

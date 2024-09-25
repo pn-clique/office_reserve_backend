@@ -66,13 +66,11 @@ export class CallBackUseCase {
     description: string;
   }) {
 
-    // function formatCurrency(value: number, currencySymbol: string): string {
-    //   const formattedValue = Number(value.toFixed(2));
-    //   const valueWithComma = String(formattedValue).replace(".", ",");
-    //   return `${valueWithComma} ${currencySymbol}`;
-    // }
-
-    // const formatted = formatCurrency(amount, "KZ");
+    function formatCurrency(value: number, currencySymbol: string): string {
+      const formattedValue = Number(value.toFixed(2));
+      const valueWithComma = String(formattedValue).replace(".", ",");
+      return `${valueWithComma} ${currencySymbol}`;
+    }
 
     return new SendMail().execute({
       to: email ?? '',
@@ -102,7 +100,7 @@ export class CallBackUseCase {
             <p style="margin: 5px 0; color: #666666;"><strong>Hora da Reserva:</strong> ${startTime}</p>
             <p style="margin: 5px 0; color: #666666;"><strong>Serviço Reservado:</strong> ${modality}</p>
             <p style="margin: 5px 0; color: #666666;"><strong>Observações:</strong> ${description}</p>
-            <p style="margin: 5px 0; color: #666666;"><strong>TOTAL PAGO:</strong> ${amount}</p>
+            <p style="margin: 5px 0; color: #666666;"><strong>TOTAL PAGO:</strong> ${formatCurrency(amount, "KZ")}</p>
         </div>
         <div style="text-align: center; color: #999999; font-size: 12px;">
             <p style="margin: 5px 0;">&copy; ${new Date().getFullYear()} PN Clique. Todos os direitos reservados.</p>
