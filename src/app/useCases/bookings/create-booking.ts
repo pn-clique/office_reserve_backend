@@ -81,13 +81,6 @@ export class CreateBookingUseCase implements UseCase {
           most_required: mostRequired
         },
       });
-      
-      await Prisma.place.update({
-        where: {id: place.id},	
-        data: {
-          most_required:{increment:1}          
-        }
-      })
 
       const priceWithoutDot = modalities.price.toString().replace(".", "");
       const amount = parseFloat(priceWithoutDot);
