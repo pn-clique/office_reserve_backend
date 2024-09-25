@@ -24,7 +24,6 @@ export class EmisIntegrationService {
         identifier,
       } = input;
 
-      console.log(input);
       const generateReference = await axios.post(
         `${process.env.PAYMENT_REFERENCE_URL}`,
         {
