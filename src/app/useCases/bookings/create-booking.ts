@@ -110,7 +110,6 @@ export class CreateBookingUseCase implements UseCase {
       const data = { booking, user, token, payment };
       return successResponse(data);
     } catch (error: any) {
-      console.log(error);
       return errorResponse(error);
     }
   }
