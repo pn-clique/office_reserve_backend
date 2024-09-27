@@ -25,15 +25,15 @@ export class EmisIntegrationService {
       } = input;
 
       const generateReference = await axios.post(
-        `${process.env.PAYMENT_REFERENCE_URL}`,
+        "https://pagamento.ao/payment/initiate",
         {
-          public_key: `${process.env.PAYMENT_REFERENCE_API_KEY}`,
+          public_key: "pro_kxi4nvp7mf3rji8ziamngmn9562c7jhxtuwljnndh4n26nk0572",
           identifier: String(identifier),
           currency: 'KZ',
           amount: Number(value),
           gateway_methods: ['MulticaixaExpress'],
           details: plan,
-          ipn_url: `${process.env.API_URL}/callback-office-reserve`,
+          ipn_url: "https://api-coworking.pnclique.com/callback-office-reserve",
           cancel_url:  'https://coworking.pnclique.com/user',
           success_url: 'https://coworking.pnclique.com/user',
           site_name: 'PN Clique Coworking',

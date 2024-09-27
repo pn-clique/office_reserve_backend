@@ -17,13 +17,13 @@ export class SendMail {
         port: 465,
         secure: true,
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
+          user: "pnclique@gmail.com",
+          pass: "ooboivoyvcyeebtr",
         },
       });
 
       await transporter.sendMail({
-        from: `PN-Clique <${process.env.EMAIL_USER}>`,
+        from: "PN-Clique pnclique@gmail.com",
         to,
         subject,
         html,

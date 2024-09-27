@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:coworking.db@db-coworking.ctav2aew1maf.eu-north-1.rds.amazonaws.com"
 }
 
 model User {

@@ -19,7 +19,7 @@ export class LoginUseCase  implements UseCase {
         return badRequestResponse({ message: 'Invalid credentials' });
       }
 
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET ?? 'pn-clique-reserve-system', { expiresIn: '1d' });
+      const token = jwt.sign({ userId: user.id }, 'e0836deb27a4e0e9f2cb4a0f67a33c85', { expiresIn: '1d' });
 
       const data = { user, token };
 

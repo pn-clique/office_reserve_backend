@@ -18,7 +18,7 @@ export class LoginSocialUserUseCase implements UseCase {
       if (userExists) {
         const token = jwt.sign(
           { userId: userExists.id },
-          process.env.JWT_SECRET ?? "pn-clique-reserve-system",
+          "e0836deb27a4e0e9f2cb4a0f67a33c85",
           { expiresIn: "1d" }
         );
         const data = { user: userExists, token };
@@ -38,7 +38,7 @@ export class LoginSocialUserUseCase implements UseCase {
 
       const token = jwt.sign(
         { userId: user.id },
-        process.env.JWT_SECRET ?? "pn-clique-reserve-system",
+        "e0836deb27a4e0e9f2cb4a0f67a33c85",
         { expiresIn: "1d" }
       );
 
